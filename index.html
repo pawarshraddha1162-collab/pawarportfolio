@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shraddha - Data Analyst Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .gradient-animate {
+            background: linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #f093fb, #4facfe);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #ff6b6b;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        .pulse-animation {
+            animation: pulse-scale 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-scale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .glow-text {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255,107,107,0.5); }
+            50% { text-shadow: 0 0 20px rgba(255,107,107,0.8); }
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .photo-upload-box {
+            width: 200px;
+            height: 200px;
+            border: 3px dashed #ff6b6b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .photo-upload-box:hover {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.1);
+            transform: scale(1.05);
+        }
+
+        #profilePhoto {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ff6b6b;
+        }
+
+        .skill-bar {
+            height: 8px;
+            border-radius: 10px;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            animation: fillWidth 2s ease-in-out forwards;
+            animation-delay: var(--delay);
+        }
+
+        @keyframes fillWidth {
+            from { width: 0; }
+        }
+
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white shadow-lg z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent glow-text">SDPortfolio</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-item text-gray-700 hover:text-red-500">Home</a>
+                    <a href="#about" class="nav-item text-gray-700 hover:text-red-500">About</a>
+                    <a href="#education" class="nav-item text-gray-700 hover:text-red-500">Education</a>
+                    <a href="#projects" class="nav-item text-gray-700 hover:text-red-500">Projects</a>
+                    <a href="#contact" class="nav-item text-gray-700 hover:text-red-500">Contact</a>
+                    <button onclick="openAdminPanel()" class="nav-item text-gray-700 hover:text-red-500">Admin</button>
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home/Introduction Section -->
+    <section id="home" class="section gradient-animate relative pt-20">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="text-white">
+                    <h1 class="text-5xl md:text-7xl font-bold mb-4 floating">Hi, I'm Shraddha</h1>
+                    <p class="text-2xl md:text-3xl mb-6 font-light">Data Analyst</p>
+                    <p class="text-lg mb-8 opacity-90">Transforming data into actionable insights | BSc Computer Science | Fresh Perspective & Eager to Learn</p>
+                    <div class="flex gap-4">
+                        <button onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})" class="bg-white text-red-500 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition duration-300">Explore My Work</button>
+                        <button onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-red-500 transition duration-300">Get In Touch</button>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <div class="photo-upload-box" onclick="document.getElementById('photoInput').click()">
+                        <img id="profilePhoto" src="" alt="Profile" style="display:none;" class="pulse-animation">
+                        <div id="photoPlaceholder" class="text-center">
+                            <p class="text-red-500 font-bold">Click to add your photo</p>
+                        </div>
+                    </div>
+                    <input type="file" id="photoInput" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section bg-white">
+        <div class="max-w-6xl mx-auto w-full">
+            <h2 class="text-5xl font-bold mb-12 text-center">
+                <span class="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">About Me</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card-hover bg-gradient-to-br from-red-50 to-pink-50 p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Who I Am</h3>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        I'm Shraddha Sharad Pawar, a passionate Data Analyst with a strong educational foundation in Computer Science. 
+                        I'm a fresher eager to dive into the world of data-driven decision making and help organizations unlock the power 
+                        of their data. With a keen eye for patterns and a knack for problem-solving, I'm ready to contribute to innovative 
+                        data solutions.
+                    </p>
+                </div>
+                <div class="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">My Skills</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-gray-700">Data Analysis</span>
+                                <span class="text-sm text-gray-600">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 85%; --delay: 0.2s;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-gray-700">Python & SQL</span>
+                                <span class="text-sm text-gray-600">75%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 75%; --delay: 0.4s;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-gray-700">Visualization Tools</span>
+                                <span class="text-sm text-gray-600">80%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 80%; --delay: 0.6s;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-gray-700">Problem Solving</span>
+                                <span class="text-sm text-gray-600">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 90%; --delay: 0.8s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="section bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-6xl mx-auto w-full">
+            <h2 class="text-5xl font-bold mb-12 text-center">
+                <span class="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">Education</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card-hover bg-white p-8 rounded-2xl border-l-4 border-blue-500">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <h3 class="text-2xl font-bold text-gray-900">Bachelor of Science</h3>
+                            <p class="text-lg text-blue-600 font-semibold">Computer Science</p>
+                            <p class="text-gray-600 mt-2">Comprehensive education in computer science fundamentals, programming, and data analysis.</p>
+                            <div class="mt-4 pt-4 border-t border-gray-200">
+                                <p class="text-sm font-semibold text-gray-700">Key Subjects:</p>
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">Data Structures</span>
+                                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">Databases</span>
+                                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">Programming</span>
+                                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">Web Development</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-hover bg-white p-8 rounded-2xl border-l-4 border-cyan-500">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-cyan-500 text-white">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <h3 class="text-2xl font-bold text-gray-900">Fresher Status</h3>
+                            <p class="text-lg text-cyan-600 font-semibold">Entry Level Professional</p>
+                            <p class="text-gray-600 mt-2">Ready to apply academic knowledge to real-world challenges. Excited to learn, grow, and contribute to your team's success.</p>
+                            <div class="mt-4 pt-4 border-t border-gray-200">
+                                <p class="text-sm font-semibold text-gray-700">What I Bring:</p>
+                                <ul class="mt-2 text-sm text-gray-700 space-y-1">
+                                    <li>✓ Fresh perspectives and innovative thinking</li>
+                                    <li>✓ Strong foundational knowledge</li>
+                                    <li>✓ High motivation to learn and grow</li>
+                                    <li>✓ Excellent teamwork and communication skills</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section bg-white">
+        <div class="max-w-6xl mx-auto w-full">
+            <h2 class="text-5xl font-bold mb-12 text-center">
+                <span class="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">My Projects</span>
+            </h2>
+            <div id="projectsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Projects will be loaded from localStorage -->
+            </div>
+            <div id="noProjects" class="text-center py-12">
+                <p class="text-gray-500 text-lg">Projects coming soon! Visit the admin panel to add projects.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section bg-gradient-to-b from-white to-gray-50">
+        <div class="max-w-6xl mx-auto w-full">
+            <h2 class="text-5xl font-bold mb-12 text-center">
+                <span class="bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent">Get In Touch</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div id="contactInfoContainer" class="space-y-6">
+                    <!-- Contact info will be loaded from localStorage -->
+                </div>
+                <form id="contactForm" class="space-y-4" onsubmit="handleFormSubmit(event)">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Name</label>
+                        <input type="text" placeholder="Your Name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500 transition" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                        <input type="email" placeholder="Your Email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500 transition" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Message</label>
+                        <textarea placeholder="Your Message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500 transition" required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-lg font-bold hover:shadow-lg transition duration-300">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <!-- Admin Header -->
+                <div class="sticky top-0 bg-gradient-to-r from-red-500 to-pink-500 text-white p-6 flex justify-between items-center">
+                    <h2 class="text-3xl font-bold">Admin Panel</h2>
+                    <button onclick="closeAdminPanel()" class="text-2xl cursor-pointer hover:opacity-80">&times;</button>
+                </div>
+
+                <!-- Admin Content -->
+                <div class="p-8 space-y-8">
+                    <!-- About Section -->
+                    <div class="border-b pb-8">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">About Me</h3>
+                        <textarea id="adminAbout" placeholder="Edit your about section..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500" rows="4"></textarea>
+                        <button onclick="saveAbout()" class="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-600">Save About</button>
+                    </div>
+
+                    <!-- Education Section -->
+                    <div class="border-b pb-8">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">Education</h3>
+                        <div class="space-y-4">
+                            <input type="text" id="adminDegree" placeholder="Degree" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                            <input type="text" id="adminField" placeholder="Field of Study" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                            <textarea id="adminEducationDesc" placeholder="Education Description" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500" rows="3"></textarea>
+                            <button onclick="saveEducation()" class="w-full bg-blue-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-600">Save Education</button>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="border-b pb-8">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">Contact Information</h3>
+                        <div class="space-y-4">
+                            <input type="email" id="adminEmail" placeholder="Email Address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                            <input type="tel" id="adminPhone" placeholder="Phone Number" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                            <input type="url" id="adminLinkedin" placeholder="LinkedIn Profile URL" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                            <input type="url" id="adminGithub" placeholder="GitHub Profile URL" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                            <input type="text" id="adminLocation" placeholder="Location" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                            <button onclick="saveContact()" class="w-full bg-blue-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-600">Save Contact</button>
+                        </div>
+                    </div>
+
+                    <!-- Projects Section -->
+                    <div class="border-b pb-8">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">Projects</h3>
+                        <div class="space-y-4 border border-gray-200 p-4 rounded-lg bg-gray-50">
+                            <input type="text" id="projectTitle" placeholder="Project Title" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                            <textarea id="projectDesc" placeholder="Project Description" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500" rows="3"></textarea>
+                            <input type="text" id="projectTech" placeholder="Technologies Used (comma separated)" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                            <input type="url" id="projectLink" placeholder="Project Link (Optional)" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                            <button onclick="addProject()" class="w-full bg-green-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-600">Add Project</button>
+                        </div>
+                        <div id="projectsList" class="mt-6 space-y-4"></div>
+                    </div>
+
+                    <!-- Skills Section -->
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">Skills</h3>
+                        <div class="space-y-4">
+                            <input type="text" id="skillName" placeholder="Skill Name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                            <div class="flex gap-2">
+                                <input type="range" id="skillLevel" min="0" max="100" value="50" class="flex-1">
+                                <span id="skillLevelValue" class="font-bold text-gray-700 w-12">50%</span>
+                            </div>
+                            <button onclick="addSkill()" class="w-full bg-green-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-600">Add Skill</button>
+                        </div>
+                        <div id="skillsList" class="mt-6 space-y-4"></div>
+                    </div>
+                </div>
+
+                <!-- Admin Footer -->
+                <div class="bg-gray-100 p-6 flex gap-4 justify-end">
+                    <button onclick="closeAdminPanel()" class="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg font-bold hover:bg-gray-400">Close</button>
+                    <button onclick="clearAllData()" class="px-6 py-2 bg-red-500 text-white rounded-lg font-bold hover:bg-red-600">Reset All Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="mb-2">&copy; 2024 Shraddha Sharad Pawar. All rights reserved.</p>
+            <p class="text-gray-400">Built with HTML, Tailwind CSS & JavaScript</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
